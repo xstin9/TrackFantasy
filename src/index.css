@@ -49,7 +49,11 @@ body {
 }
 
 .site-nav {
-  background: var(--track-navy);
+  position: relative;
+  isolation: isolate;
+  background-color: var(--track-navy) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
   box-shadow: 0 8px 24px rgba(2, 12, 25, 0.2);
 }
 

@@ -28,8 +28,20 @@ export function Draft() {
   const spent = drafted.reduce((sum, a) => sum + a.price, 0);
   const remaining = competition.budget - spent;
   const squadFull = draftAthleteIds.length >= competition.squadSize;
+  const missingAthletes = Math.max(0, competition.squadSize - draftAthleteIds.length);
+  const hasManagerName = managerName.trim().length > 0;
 
-  const canSave = draftAthleteIds.length === competition.squadSize && managerName.trim().length > 0;
+  const canSave = draftAthleteIds.length === competition.squadSize && hasManagerName;
+  const saveReason = !canSave
+    ? [
+        missingAthletes > 0
+          ? `Pick ${missingAthletes} more athlete${missingAthletes === 1 ? '' : 's'}`
+          : '',
+        !hasManagerName ? 'enter a manager name' : '',
+      ]
+        .filter(Boolean)
+        .join(' and ')
+    : '';
 
   function handleToggle(athleteId: string, price: number) {
     const isSelected = draftAthleteIds.includes(athleteId);
@@ -136,13 +148,20 @@ export function Draft() {
             />
           </label>
         </div>
-        <button
-          onClick={handleSave}
-          disabled={!canSave}
-          className="button-primary rounded bg-[var(--split-lime)] px-6 py-3 font-display text-lg font-bold text-[var(--track-navy)] transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
-        >
-          Save team
-        </button>
+        <div className="flex flex-col items-stretch gap-2 sm:items-end">
+          {!canSave && (
+            <p className="max-w-56 text-right text-xs text-[var(--lane-white)]/60" aria-live="polite">
+              {saveReason} to save your team
+            </p>
+          )}
+          <button
+            onClick={handleSave}
+            disabled={!canSave}
+            className="button-primary rounded bg-[var(--split-lime)] px-6 py-3 font-display text-lg font-bold text-[var(--track-navy)] transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            Save team
+          </button>
+        </div>
       </div>
     </div>
   );

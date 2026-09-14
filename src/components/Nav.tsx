@@ -9,7 +9,7 @@ const links = [
 
 export function Nav() {
   return (
-    <header className="site-nav sticky top-0 z-20">
+    <header className="site-nav sticky top-0 z-50">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
         <NavLink to="/" className="font-display text-2xl font-bold tracking-tight">
           Track<span style={{ color: 'var(--split-lime)' }}>Fantasy</span>
